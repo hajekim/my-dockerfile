@@ -1,19 +1,16 @@
-FROM python:3.11-slim-buster
+FROM python:3.9-slim-buster
 
 RUN apt -y update && apt install -y --no-install-recommends \
+    gcc \
     libgomp1 \
     && apt clean
 
-# Install Basic Python Libs
-RUN pip3 install numpy pandas scikit-learn
-
-# Install AWS Libs
-RUN pip3 install awscli boto3 pyathena
-
-# Install BRSC Libs
-# lightGBM
-# Ray
-RUN pip3 install lightgbm ray
+# Install Requirement Python Libs
+RUN /usr/local/bin/python3 -m pip install --upgrade pip && \
+    /usr/local/bin/python3 -m pip install \
+            numpy pandas scikit-learn \
+            awscli boto3 pyathena \
+            lightgbm ray
 
 ENV PYTHONUNBUFFERED=TRUE
 ENTRYPOINT ["python3"]

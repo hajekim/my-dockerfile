@@ -1,16 +1,18 @@
-FROM python:3.11-slim-buster
+FROM python:3.7-slim-buster
 
-RUN apt -y update && apt install -y --no-install-recommends \
-    libgomp1 \
-    && apt clean
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    gcc libgomp1 \
+    expat glibc-source glibc-doc \
+    && apt-get full-upgrade -y \
+    && apt-get clean
+    # libexpat1-dev libc6-dev \
 
-# Install Basic Python Libs
-RUN pip3 install numpy pandas scikit-learn
-
-# Install AWS Libs
-RUN pip3 install awscli boto3 pyathena awswrangler
-
-# Install TA-Sentiment Libs
+# Install Requirement Python Libs
+RUN /usr/local/bin/python3 -m pip install --upgrade pip && \
+    /usr/local/bin/python3 -m pip install \
+            numpy pandas scikit-learn \
+            awscli boto3 pyathena awswrangler
 
 ENV PYTHONUNBUFFERED=TRUE
+
 ENTRYPOINT ["python3"]

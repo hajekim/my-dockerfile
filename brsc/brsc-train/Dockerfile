@@ -1,6 +1,7 @@
-FROM python:3.11-slim-buster
+FROM python:3.11-rc-slim-buster
 
 RUN apt -y update && apt install -y --no-install-recommends \
+    gcc \
     libgomp1 \
     && apt clean
 
